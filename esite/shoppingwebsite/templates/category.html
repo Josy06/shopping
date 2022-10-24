@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+       {{category.description|truncatewords:155}}
+    {% else %}
+      Welcome to  AUTOMOTIVE store where you can buys different items...
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{category.name}}-AUTOMOTIVE Store
+        {% else %}
+            See our New Collections -AUTOMOTIVE Store
+        {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+ <div>
+    <div class="row my_row_class"><!-- class "style part4 eco-->
+        <div class="mx-auto"><!-- class "style part4 eco-->
+        <p><a href="{% url 'shopapp:allproductcat' %}">Our Product Collections</a></p><!--category part3-->
+    </div>
+     </div>
+</div>
+{% endif %}
+<div class="mx-auto "><!-- class "style part4 eco-->
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}"alt="{{category.name}}"><!-- class "style part4 eco-->
+</div>
+   <br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1><!-- class "style part4 eco-->
+    <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+<img class="my_imgae my_image_padding" src="{% static 'img/banner.jpg' %}" width="100%"  height="500px" style="margin-top:50px" alt="our products">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title"> Our Products collections </h1>
+    <p class="text-justify">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+</div>
+{% endif %} 
+<div class="container"><!--category 4-->
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem ;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}} "></a><!--href= product page2-->
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>Price:{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+           {% if products.paginator.num_pages > 1 %}<!--paginator eco-->
+           <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}<!--paginator eco-->
+                 <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a><!--paginator eco-->
+            {% endfor %}<!--paginator eco-->
+        </div>
+           {% endif %}<!--paginator eco-->
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+
+
